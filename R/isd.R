@@ -123,7 +123,13 @@ proc_other <- function(x){
        check_get(x, "KA1", ka1),
        check_get(x, "EQD", eqd),
        check_get(x, "MD1", md1),
-       check_get(x, "MW1", mw1)
+       check_get(x, "MW1", mw1),
+       check_get(x, "AA1",aa1),
+       check_get(x, "AA2",aa2),
+       check_get(x, "AA3",aa3),
+       check_get(x, "AA4",aa4)
+       
+       
   )
   other <- tt[!sapply(tt, function(x) is.null(x[[1]]))]
   do.call(cbind, lapply(other, data.frame, stringsAsFactors = FALSE))
@@ -254,5 +260,29 @@ mw1 <- function(x){
     str_match_len(x, "MW1", 6),
     list(c(1,3),c(4,5),c(6,6)),
     c('first_weather_reported','condition','condition_quality')
+  )
+}
+
+# Precipitation Data
+# LiQUID-PRECIPITATION ocurrence identifier, aa1-aa4: an indicator of up to 4 repeating fields of LIQUID-PRECIPITATION
+# aa1(x)
+aa1 <- function(x){
+  aa14(x,"AA1")
+}
+aa2 <- function(x){
+  aa14(x,"AA2")
+}
+aa3 <- function(x){
+  aa14(x,"AA3")
+}
+aa4 <- function(x){
+  aa14(x,"AA4")
+}
+
+aa14 <- function(x,code){
+  str_pieces(
+    str_match_len(x, code, 11),
+    list(c(1,3),c(4,5),c(6,9),c(10,10),c(11,11)),
+    c('liquid_precip_code','period_quantity_hrs','depth_dimension','condition_code','quality_code')
   )
 }
